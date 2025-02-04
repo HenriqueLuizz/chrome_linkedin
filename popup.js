@@ -76,11 +76,11 @@ function extractPostsFromProfile() {
 
         // Reactions
         let reactionsElement = post.querySelector("span.social-details-social-counts__reactions-count");
-        postData.reactions = reactionsElement ? reactionsElement.textContent.trim() : "0";
+        postData.reactions = reactionsElement ? reactionsElement.textContent.trim() : "";
 
         // Reposts
-        let repostsElement = post.querySelectorAll("button.social-details-social-counts__btn")[1];
-        postData.reposts = repostsElement ? repostsElement.textContent.trim().split(" ")[0] : "0";
+        let repostsElement = post.querySelector("button.social-details-social-counts__btn span");
+        postData.reposts = repostsElement ? repostsElement.textContent.trim().split(" ")[0] : "";
 
         posts.push(postData);
     });
