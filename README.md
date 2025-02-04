@@ -37,6 +37,7 @@ Pronto! A extensão está instalada no seu Chrome. 🎉
 
 ## 📂 Estrutura do Projeto
 
+```sh
 📂 linkedin-post-extractor
  ├── 📁 icons/         # Ícones da extensão
  ├── 📁 scripts/       # Código JavaScript principal
@@ -45,6 +46,7 @@ Pronto! A extensão está instalada no seu Chrome. 🎉
  ├── 📄 popup.js       # Lógica do botão de captura
  ├── 📄 styles.css     # Estilos do popup
  └── 📄 README.md      # Este arquivo
+````
 
 ## 📜 Licença
 
