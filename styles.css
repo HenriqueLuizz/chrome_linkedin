@@ -1,0 +1,29 @@
+body {
+    font-family: Arial, sans-serif;
+    width: 200px;
+    padding: 10px;
+    text-align: center;
+}
+
+button {
+    background-color: #0073b1;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    margin: 5px 0;
+}
+
+button:hover {
+    background-color: #005582;
+}
+
+button:disabled {
+    background-color: #868686;
+}
+
+p {
+    font-size: 14px;
+    margin-top: 10px;
+}
