@@ -63,5 +63,4 @@ jobs:
           prerelease: false
           files: |
             ./artifacts/**/convert_*
-        env:
-            GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+
