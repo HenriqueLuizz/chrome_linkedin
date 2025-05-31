@@ -1,5 +1,38 @@
-*.crx
-*.pem
-*.zip
-
+# Binários de build
+convert/convert_mac
+convert/convert.exe
+convert/convert_linux
+convert/convert_*
+*/build/*
 tools/*
+
+# Artefatos do GitHub Actions
+artifacts/
+
+# Arquivos temporários do Go
+*.out
+*.test
+*.csv
+*.xlsx
+*.json
+*.txt
+*.log
+*.err
+*.out
+
+# Diretórios de dependências locais
+vendor/
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Outros arquivos temporários
+*.tmp
+
+# Ignorar arquivos de build antigos
+convert/*.exe
+convert/*.bin
+convert/*.dll
+convert/*.so
+convert/*.dylib
