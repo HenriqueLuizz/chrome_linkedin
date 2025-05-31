@@ -6,6 +6,9 @@ on:
       - 'v*.*.*'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -36,6 +39,7 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -59,8 +63,5 @@ jobs:
           prerelease: false
           files: |
             ./artifacts/**/convert_*
-
-      # Opcional: publicar em GitHub Packages (Container Registry)
-      # - name: Publish to GitHub Packages
-      #   run: |
-      #     echo "Publicação em Packages pode ser configurada aqui se necessário." 
+        env:
+            GITHUB_TOKEN: ${{ secrets.GH_PAT }}
