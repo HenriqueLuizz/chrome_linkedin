@@ -16,6 +16,8 @@ import (
 	"github.com/tealeg/xlsx"
 )
 
+const VERSION = "1.0.2"
+
 type Post struct {
 	Content     string `json:"content" csv:"content"`
 	Date        string `json:"date" csv:"date"`
@@ -32,10 +34,18 @@ type Post struct {
 func main() {
 	inputPath := flag.String("input", "", "Arquivo ou diretório de entrada (JSON)")
 	outputFormat := flag.String("format", "csv", "Formato de saída: csv ou xlsx")
+	showVersion := flag.Bool("version", false, "Exibir versão do programa")
 	flag.Parse()
 
+	if *showVersion {
+		fmt.Printf("Conversor LinkedIn JSON v%s\n", VERSION)
+		os.Exit(0)
+	}
+
 	if *inputPath == "" {
+		fmt.Printf("Conversor LinkedIn JSON v%s\n", VERSION)
 		fmt.Println("Por favor, informe o caminho do arquivo ou diretório com a flag -input")
+		fmt.Println("Use -help para ver todas as opções disponíveis")
 		os.Exit(1)
 	}
 
