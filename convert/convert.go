@@ -26,6 +26,7 @@ type Post struct {
 	Reposts     string `json:"reposts" csv:"reposts"`
 	Timestamp   string `json:"timestamp" csv:"timestamp"`
 	PostDate    string `csv:"post_date"`
+	Owner       string `csv:"owner"`
 }
 
 func main() {
@@ -96,6 +97,37 @@ func parsePostDate(dateStr, timestamp string) string {
 	return postTime.Format(layout)
 }
 
+// Função para tratar duplicação no campo name
+func cleanName(name string) string {
+	if len(name) == 0 {
+		return name
+	}
+	// Se o nome tem pelo menos 2 caracteres e a segunda metade é igual à primeira
+	mid := len(name) / 2
+	if len(name) >= 2 && name[:mid] == name[mid:] {
+		return name[:mid]
+	}
+	return name
+}
+
+// Função para encontrar o nome que mais se repete
+func findMostFrequentName(posts []Post) string {
+	nameCount := make(map[string]int)
+	for _, post := range posts {
+		nameCount[post.Name]++
+	}
+
+	var mostFrequentName string
+	maxCount := 0
+	for name, count := range nameCount {
+		if count > maxCount {
+			maxCount = count
+			mostFrequentName = name
+		}
+	}
+	return mostFrequentName
+}
+
 func convertFile(jsonPath, format string) {
 	data, err := ioutil.ReadFile(jsonPath)
 	if err != nil {
@@ -107,10 +139,18 @@ func convertFile(jsonPath, format string) {
 		fmt.Printf("Erro ao fazer parse do JSON em %s: %v\n", jsonPath, err)
 		return
 	}
-	// Preencher o campo PostDate
+	// Preencher o campo PostDate e limpar o campo Name
 	for i := range posts {
 		posts[i].PostDate = parsePostDate(posts[i].Date, posts[i].Timestamp)
+		posts[i].Name = cleanName(posts[i].Name)
 	}
+
+	// Encontrar o nome mais frequente para a coluna Owner
+	mostFrequentName := findMostFrequentName(posts)
+	for i := range posts {
+		posts[i].Owner = mostFrequentName
+	}
+
 	baseName := strings.TrimSuffix(jsonPath, filepath.Ext(jsonPath))
 	if format == "csv" {
 		csvFile, err := os.Create(baseName + ".csv")
@@ -130,7 +170,7 @@ func convertFile(jsonPath, format string) {
 			fmt.Printf("Erro ao criar planilha XLSX: %v\n", err)
 			return
 		}
-		headers := []string{"content", "date", "description", "link", "name", "reactions", "reposts", "timestamp", "post_date"}
+		headers := []string{"content", "date", "description", "link", "name", "reactions", "reposts", "timestamp", "post_date", "owner"}
 		headerRow := sheet.AddRow()
 		for _, h := range headers {
 			headerRow.AddCell().Value = h
@@ -146,6 +186,7 @@ func convertFile(jsonPath, format string) {
 			row.AddCell().Value = post.Reposts
 			row.AddCell().Value = post.Timestamp
 			row.AddCell().Value = post.PostDate
+			row.AddCell().Value = post.Owner
 		}
 		if err := file.Save(baseName + ".xlsx"); err != nil {
 			fmt.Printf("Erro ao salvar XLSX: %v\n", err)
